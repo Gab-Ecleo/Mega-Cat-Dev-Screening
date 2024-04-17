@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class ShooterBehaviour : MonoBehaviour
 {
+
+    #region Variables
+
     [SerializeField] private float _rotationSpeed;
     [SerializeField] private float _shootSpeed;
     [SerializeField] private Transform _shootOrigin;
@@ -15,10 +18,14 @@ public class ShooterBehaviour : MonoBehaviour
     
     private float ROTATIONLIMIT = 155;
     
+    #endregion
+
+    #region UnityMethods
+    
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-       // transform.rotation = Quaternion.Euler(0, 0,Mathf.Clamp(transform.rotation.z, -RIGHTANGLE, RIGHTANGLE));
+        // transform.rotation = Quaternion.Euler(0, 0,Mathf.Clamp(transform.rotation.z, -RIGHTANGLE, RIGHTANGLE));
     }
 
     private void Update()
@@ -32,6 +39,10 @@ public class ShooterBehaviour : MonoBehaviour
             ShootBall();
         }
     }
+
+    #endregion
+
+    #region Methods
 
     private void RotateShooter()
     {
@@ -53,6 +64,10 @@ public class ShooterBehaviour : MonoBehaviour
         
         ballRb.AddForce(_shootOrigin.up * _shootSpeed, ForceMode2D.Impulse);
     }
+
+    #endregion
+
+   
 
     private void OnCollisionEnter2D(Collision2D other)
     {
