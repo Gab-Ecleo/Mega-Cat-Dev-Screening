@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bounceable
   - ColoredBall
+  - Ball Tile
   layers:
   - Default
   - TransparentFX

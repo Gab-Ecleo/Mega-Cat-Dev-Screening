@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BallBehaviour : MonoBehaviour
@@ -6,6 +7,7 @@ public class BallBehaviour : MonoBehaviour
     
     private Rigidbody2D rb;
     private BallPouch _ballPouch;
+    private bool _canSnap;
 
     private void Awake()
     {
@@ -13,6 +15,7 @@ public class BallBehaviour : MonoBehaviour
         _ballPouch = BallPouch.Instance;
         
         ParentPouch = GameObject.Find("BallPouch");
+        _canSnap = false;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -21,10 +24,13 @@ public class BallBehaviour : MonoBehaviour
 
         if (!_ballPouch.ContainsBall(gameObject))
             _ballPouch.AddBall(gameObject);
+        //
+        // if (rb != null)
+        //     Destroy(rb);
 
-        if (rb != null)
-            Destroy(rb);
-        
+        rb.velocity = new Vector2(0, 0);
+        _canSnap = true;
+
         gameObject.transform.parent = ParentPouch.transform;
 
         if (other.gameObject.CompareTag("ColoredBall"))
@@ -41,5 +47,17 @@ public class BallBehaviour : MonoBehaviour
         }
         
         GameEvents.ON_BALL_COLLISSION?.Invoke();
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        Debug.Log(_canSnap);
+        
+        if (other.gameObject.tag == "BallTile" && _canSnap)
+        {
+            Debug.Log("Snapping object");
+            transform.position = other.gameObject.transform.position;
+        }
+            
     }
 }
