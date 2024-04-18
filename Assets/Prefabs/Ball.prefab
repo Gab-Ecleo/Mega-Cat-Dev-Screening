@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2f64075a235ac4b8309d61d0fdfcd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BallColor: 0
+  BallColor: 2
 --- !u!212 &6610996811072294677
 SpriteRenderer:
   m_ObjectHideFlags: 0

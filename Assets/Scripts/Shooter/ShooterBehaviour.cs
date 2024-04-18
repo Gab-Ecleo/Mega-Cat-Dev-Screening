@@ -37,7 +37,7 @@ public class ShooterBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         
-        GameEvents.ON_BALL_COLLISSION += ShowNextBall;
+        GameEvents.ON_BALL_COLLISSION += LoadBall;
     }
 
     private void Start()
@@ -59,7 +59,7 @@ public class ShooterBehaviour : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameEvents.ON_BALL_COLLISSION -= ShowNextBall;
+        GameEvents.ON_BALL_COLLISSION -= LoadBall;
     }
 
     #endregion
@@ -89,15 +89,19 @@ public class ShooterBehaviour : MonoBehaviour
     //Load the turret via a Loading Function, this function is called at the start and recalled every time the ball collides
     private void LoadBall()
     {
-        if (_ballLoaded) return;
+        Debug.Log(_ballLoaded);
 
+        if (_ballLoaded) return;
+        
         _loadedBall = _ballPrev;
         _loadedBall.transform.position = _shootOrigin.position;
         _ballRb = _loadedBall.GetComponent<Rigidbody2D>();
         
-        ShowNextBall();
         _ballLoaded = true;
         _nextBallShown = false;
+        ShowNextBall();
+        
+        
     }
     //Show next upcoming bullet before Loading it
     private void ShowNextBall()
