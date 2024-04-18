@@ -44,19 +44,17 @@ public class ShooterBehaviour : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        GameEvents.ON_BALL_COLLISSION += LoadBall;
         GameEvents.ON_BALL_COLLISSION += ResetAmmoBank;
     }
     
     private void OnDestroy()
     {
-        GameEvents.ON_BALL_COLLISSION -= LoadBall;
         GameEvents.ON_BALL_COLLISSION -= ResetAmmoBank;
     }
     
     private void Start()
     {
-        LoadAmmoBank();
+        ResetAmmoBank();
         ShowNextBall();
     }
 
@@ -77,10 +75,8 @@ public class ShooterBehaviour : MonoBehaviour
         var shootDir = _shootOrigin.up * _shootSpeed;
 
         _ballRb.AddForce(shootDir, ForceMode2D.Impulse);
-        BallPouch.Instance.AddBall(_loadedBall);
-        
+
         ballLoaded = false;
-        showingNextBall = false;
     }
     
     private void RotateShooter()
@@ -101,39 +97,36 @@ public class ShooterBehaviour : MonoBehaviour
     {
         if (showingNextBall) return;
         
-        var ballIndex = Random.Range(0, _ammoBank.Count);
-        if (ballIndex > _ammoBank.Count)
-            ballIndex -= 1;
-        
-        _ballPrev = Instantiate(_ammoBank[ballIndex], _ballPrevOrigin.position, _shootOrigin.rotation);
+        _ballPrev = RandomizeBall();
 
         if (!ColorExist(_ballPrev))
         {
-            Debug.Log("Replacing Ball");
-            _ballPrev = null;
-            ShowNextBall();
-        }
-        else
-        {
-            LoadBall();
-            showingNextBall = true;
+            if (_ballPrev != null)
+            {
+                Debug.Log("This Function is being called");
+                Destroy(_ballPrev);
+            }
+            _ballPrev = RandomizeBall();
         }
         
-        
+        LoadBall();
+        showingNextBall = true;
     }
 
     //Load the turret, this function is called at the start and recalled every time the ball collides
     private void LoadBall()
     {
         if (ballLoaded) return;
+
+        if (_ballPrev != null)
+        {
+            _loadedBall = _ballPrev;
+            _loadedBall.transform.position = _shootOrigin.position;
+            _ballRb = _loadedBall.GetComponent<Rigidbody2D>();
         
-        _loadedBall = _ballPrev;
-        _loadedBall.transform.position = _shootOrigin.position;
-        _ballRb = _loadedBall.GetComponent<Rigidbody2D>();
-        
-        ballLoaded = true;
-        showingNextBall = false;
-        
+            ballLoaded = true;
+            showingNextBall = false;
+        }
         ShowNextBall();
     }
 
@@ -141,6 +134,7 @@ public class ShooterBehaviour : MonoBehaviour
     //Make a randomizer as a Temporary bullet choosing system
     private void LoadAmmoBank()
     {
+        _ammoBank.Clear();
         BallPouch.Instance.CheckColors();
         
         if (hasRed)
@@ -150,7 +144,11 @@ public class ShooterBehaviour : MonoBehaviour
         if (hasBlue)
             _ammoBank.Add(_ballPrefab[2]);
         
-        Debug.Log(hasRed);Debug.Log(hasYellow);Debug.Log(hasBlue);
+        Debug.Log("Color List:");
+        foreach (var ob in _ammoBank)
+        {
+            Debug.Log(ob);
+        }
 
         hasRed = false;
         hasBlue = false;
@@ -159,25 +157,37 @@ public class ShooterBehaviour : MonoBehaviour
 
     private void ResetAmmoBank()
     {
-        _ammoBank.Clear();
+        Debug.Log("Clearing Ammo Bank");
         LoadAmmoBank();
+        LoadBall();
+    }
+
+    private GameObject RandomizeBall()
+    {
+        var ballIndex = Random.Range(0, _ammoBank.Count);
+        if (ballIndex > _ammoBank.Count)
+            ballIndex -= 1;
+
+        return Instantiate(_ammoBank[ballIndex], _ballPrevOrigin.position, _shootOrigin.rotation);
     }
 
     private bool ColorExist(GameObject obj)
     {
-        var cond = false;
+        var cond = true;
         var lBallProp = obj.GetComponent<BallProperties>();
-        
+
         foreach (GameObject ball in _ammoBank)
         {
             var ballProp = ball.GetComponent<BallProperties>();
 
-            if (ballProp.BallColor == lBallProp.BallColor)
-            {
-                cond = true;
+            cond = lBallProp.BallColor == ballProp.BallColor;
+
+            if (cond)
                 break;
-            }
         }
+        
+        
+        
         return cond;
     }
     #endregion

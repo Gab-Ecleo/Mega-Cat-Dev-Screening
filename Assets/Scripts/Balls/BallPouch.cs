@@ -28,7 +28,6 @@ public class BallPouch : MonoBehaviour
     public void CheckColors()
     {
         if (_pouch == null) return;
-        Debug.Log("Checking Colors");
 
         foreach (var ball in _pouch)
         {
@@ -61,7 +60,6 @@ public class BallPouch : MonoBehaviour
         {
             _pouch.Add(ballObj.gameObject);
         }
-        
     }
 
     public void AddBall(GameObject ball)
@@ -72,5 +70,10 @@ public class BallPouch : MonoBehaviour
     public void RemoveBall(GameObject ball)
     {
         _pouch.Remove(ball);
+    }
+
+    public bool ContainsBall(GameObject ball)
+    {
+        return _pouch.Contains(ball);
     }
 }
