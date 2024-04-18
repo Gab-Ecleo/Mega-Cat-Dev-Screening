@@ -13,6 +13,8 @@ public class BallBehaviour : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        GameEvents.ON_BALL_COLLISSION?.Invoke();
+        
         if (other.gameObject.tag == "Bounceable") return;
 
         rb.velocity = new Vector2(0f, 0f);
