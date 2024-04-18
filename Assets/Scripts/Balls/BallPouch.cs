@@ -24,21 +24,17 @@ public class BallPouch : MonoBehaviour
     {
         LoadBallPouch();
     }
-
-    //TODO
-    //Iterate on each object checking their ball property color
-    //set true if a color is found then skip the said color until it iterates to the whole list
-    
     
     public void CheckColors()
     {
         if (_pouch == null) return;
-        
+        Debug.Log("Checking Colors");
+
         foreach (var ball in _pouch)
         {
-            BallProperties _ballColor = ball.GetComponent<BallProperties>();
+            BallProperties ballProp = ball.GetComponent<BallProperties>();
 
-            switch (_ballColor.BallColor)
+            switch (ballProp.BallColor)
             {
                 case ColorCoding.Red:
                     ShooterBehaviour.hasRed = true;
@@ -48,6 +44,11 @@ public class BallPouch : MonoBehaviour
                     break;
                 case ColorCoding.Yellow:
                     ShooterBehaviour.hasYellow = true;
+                    break;
+                default:
+                    ShooterBehaviour.hasRed = false;
+                    ShooterBehaviour.hasYellow = false;
+                    ShooterBehaviour.hasBlue = false;
                     break;
             }
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.WebSockets;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -44,15 +45,18 @@ public class ShooterBehaviour : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         GameEvents.ON_BALL_COLLISSION += LoadBall;
+        GameEvents.ON_BALL_COLLISSION += ResetAmmoBank;
     }
     
     private void OnDestroy()
     {
         GameEvents.ON_BALL_COLLISSION -= LoadBall;
+        GameEvents.ON_BALL_COLLISSION -= ResetAmmoBank;
     }
     
     private void Start()
     {
+        LoadAmmoBank();
         ShowNextBall();
     }
 
@@ -76,6 +80,7 @@ public class ShooterBehaviour : MonoBehaviour
         BallPouch.Instance.AddBall(_loadedBall);
         
         ballLoaded = false;
+        showingNextBall = false;
     }
     
     private void RotateShooter()
@@ -95,17 +100,26 @@ public class ShooterBehaviour : MonoBehaviour
     private void ShowNextBall()
     {
         if (showingNextBall) return;
-
-        LoadAmmoBank();
+        
         var ballIndex = Random.Range(0, _ammoBank.Count);
         if (ballIndex > _ammoBank.Count)
             ballIndex -= 1;
         
         _ballPrev = Instantiate(_ammoBank[ballIndex], _ballPrevOrigin.position, _shootOrigin.rotation);
-        showingNextBall = true;
+
+        if (!ColorExist(_ballPrev))
+        {
+            Debug.Log("Replacing Ball");
+            _ballPrev = null;
+            ShowNextBall();
+        }
+        else
+        {
+            LoadBall();
+            showingNextBall = true;
+        }
         
-        _ammoBank.Clear();
-        LoadBall();
+        
     }
 
     //Load the turret, this function is called at the start and recalled every time the ball collides
@@ -119,6 +133,7 @@ public class ShooterBehaviour : MonoBehaviour
         
         ballLoaded = true;
         showingNextBall = false;
+        
         ShowNextBall();
     }
 
@@ -134,10 +149,36 @@ public class ShooterBehaviour : MonoBehaviour
             _ammoBank.Add(_ballPrefab[1]);
         if (hasBlue)
             _ammoBank.Add(_ballPrefab[2]);
+        
+        Debug.Log(hasRed);Debug.Log(hasYellow);Debug.Log(hasBlue);
 
         hasRed = false;
         hasBlue = false;
         hasYellow = false;
+    }
+
+    private void ResetAmmoBank()
+    {
+        _ammoBank.Clear();
+        LoadAmmoBank();
+    }
+
+    private bool ColorExist(GameObject obj)
+    {
+        var cond = false;
+        var lBallProp = obj.GetComponent<BallProperties>();
+        
+        foreach (GameObject ball in _ammoBank)
+        {
+            var ballProp = ball.GetComponent<BallProperties>();
+
+            if (ballProp.BallColor == lBallProp.BallColor)
+            {
+                cond = true;
+                break;
+            }
+        }
+        return cond;
     }
     #endregion
     
