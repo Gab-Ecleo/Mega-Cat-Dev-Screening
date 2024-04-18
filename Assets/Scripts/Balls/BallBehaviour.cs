@@ -21,7 +21,10 @@ public class BallBehaviour : MonoBehaviour
 
         if (other.gameObject.tag == "Bounceable") return;
 
-        rb.velocity = new Vector2(0f, 0f);
+        //rb.velocity = new Vector2(0f, 0f);
+        if (rb != null)
+            Destroy(rb);
+        
         gameObject.transform.parent = ParentPouch.transform;
 
         if (!other.gameObject.CompareTag("ColoredBall")) return;
