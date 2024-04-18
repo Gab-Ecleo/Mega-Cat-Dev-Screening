@@ -103,7 +103,6 @@ public class ShooterBehaviour : MonoBehaviour
         {
             if (_ballPrev != null)
             {
-                Debug.Log("This Function is being called");
                 Destroy(_ballPrev);
             }
             _ballPrev = RandomizeBall();
@@ -143,12 +142,6 @@ public class ShooterBehaviour : MonoBehaviour
             _ammoBank.Add(_ballPrefab[1]);
         if (hasBlue)
             _ammoBank.Add(_ballPrefab[2]);
-        
-        Debug.Log("Color List:");
-        foreach (var ob in _ammoBank)
-        {
-            Debug.Log(ob);
-        }
 
         hasRed = false;
         hasBlue = false;
@@ -157,7 +150,6 @@ public class ShooterBehaviour : MonoBehaviour
 
     private void ResetAmmoBank()
     {
-        Debug.Log("Clearing Ammo Bank");
         LoadAmmoBank();
         LoadBall();
     }
@@ -185,8 +177,6 @@ public class ShooterBehaviour : MonoBehaviour
             if (cond)
                 break;
         }
-        
-        
         
         return cond;
     }
