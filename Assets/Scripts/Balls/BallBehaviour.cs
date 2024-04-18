@@ -23,7 +23,6 @@ public class BallBehaviour : MonoBehaviour
 
         rb.velocity = new Vector2(0f, 0f);
         gameObject.transform.parent = ParentPouch.transform;
-        BallPouch.Instance.ResetBallPouch();
 
         if (!other.gameObject.CompareTag("ColoredBall")) return;
         
@@ -32,6 +31,7 @@ public class BallBehaviour : MonoBehaviour
 
         if (colBallColor.Equals(ballColor))
         {
+            BallPouch.Instance.RemoveBall(gameObject);
             Destroy(gameObject);
             //Check If there's a same color next to this ball and destroy that as well
         } 

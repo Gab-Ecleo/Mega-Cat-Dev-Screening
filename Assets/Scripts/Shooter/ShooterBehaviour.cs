@@ -73,6 +73,8 @@ public class ShooterBehaviour : MonoBehaviour
         var shootDir = _shootOrigin.up * _shootSpeed;
 
         _ballRb.AddForce(shootDir, ForceMode2D.Impulse);
+        BallPouch.Instance.AddBall(_loadedBall);
+        
         ballLoaded = false;
     }
     

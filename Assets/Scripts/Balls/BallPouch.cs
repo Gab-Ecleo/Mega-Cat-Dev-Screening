@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SubsystemsImplementation;
 
@@ -19,6 +20,11 @@ public class BallPouch : MonoBehaviour
             Destroy(gameObject);
     }
 
+    private void Start()
+    {
+        LoadBallPouch();
+    }
+
     //TODO
     //Iterate on each object checking their ball property color
     //set true if a color is found then skip the said color until it iterates to the whole list
@@ -26,6 +32,8 @@ public class BallPouch : MonoBehaviour
     
     public void CheckColors()
     {
+        if (_pouch == null) return;
+        
         foreach (var ball in _pouch)
         {
             BallProperties _ballColor = ball.GetComponent<BallProperties>();
@@ -45,7 +53,7 @@ public class BallPouch : MonoBehaviour
         }
     }
 
-    public void ResetBallPouch()
+    private void LoadBallPouch()
     {
         _pouch.Clear();
         foreach (BallProperties ballObj in gameObject.GetComponentsInChildren<BallProperties>())
@@ -53,5 +61,15 @@ public class BallPouch : MonoBehaviour
             _pouch.Add(ballObj.gameObject);
         }
         
+    }
+
+    public void AddBall(GameObject ball)
+    {
+        _pouch.Add(ball);    
+    }
+    
+    public void RemoveBall(GameObject ball)
+    {
+        _pouch.Remove(ball);
     }
 }
