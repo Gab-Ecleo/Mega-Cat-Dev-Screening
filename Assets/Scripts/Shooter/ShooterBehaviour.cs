@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class ShooterBehaviour : MonoBehaviour
 {
@@ -16,18 +16,25 @@ public class ShooterBehaviour : MonoBehaviour
     [SerializeField] private Transform _shootOrigin;
     [SerializeField] private Transform _ballPrevOrigin;
     
+    [FormerlySerializedAs("_ball")]
     [Header("Prefabs/Projectiles")]
-    [SerializeField] private GameObject _ball;
-    [SerializeField] private GameObject _loadedBall;
-    [SerializeField] private GameObject _ballPrev;
+    [SerializeField] private List<GameObject> _ballPrefab;
 
     private Rigidbody2D _rb;
     private Rigidbody2D _ballRb;
 
     private float MINANGLE = 25;
     private float MAXANGLE = 155;
-    private bool _ballLoaded;
-    private bool _nextBallShown;
+    private bool ballLoaded;
+    private bool showingNextBall;
+
+    public static bool hasRed;
+    public static bool hasYellow;
+    public static bool hasBlue;
+    
+    private GameObject _loadedBall;
+    private GameObject _ballPrev;
+    [SerializeField] private List<GameObject> _ammoBank;
     
     #endregion
 
@@ -36,10 +43,14 @@ public class ShooterBehaviour : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        
         GameEvents.ON_BALL_COLLISSION += LoadBall;
     }
-
+    
+    private void OnDestroy()
+    {
+        GameEvents.ON_BALL_COLLISSION -= LoadBall;
+    }
+    
     private void Start()
     {
         ShowNextBall();
@@ -49,74 +60,83 @@ public class ShooterBehaviour : MonoBehaviour
     {
         RotateShooter();
         
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //Shoot Ball
-            Debug.Log("Shooting Ball");
+        if (Input.GetButtonDown("Fire1"))
             ShootBall();
-        }
     }
-
-    private void OnDestroy()
-    {
-        GameEvents.ON_BALL_COLLISSION -= LoadBall;
-    }
-
+    
     #endregion
 
     #region Methods
 
+    private void ShootBall()
+    {
+        var shootDir = _shootOrigin.up * _shootSpeed;
+
+        _ballRb.AddForce(shootDir, ForceMode2D.Impulse);
+        ballLoaded = false;
+    }
+    
     private void RotateShooter()
     {
         //Access Raw Input
         var xInput = Input.GetAxisRaw("Horizontal");
-        var turretPos = transform.eulerAngles.z;
+        var turretAngle = transform.eulerAngles.z;
 
         //Compute Turret Rotation
-        var lookDir = turretPos - xInput * _rotationSpeed;
+        var lookDir = turretAngle - xInput * _rotationSpeed;
         var clampedRotation = Mathf.Clamp(lookDir, MINANGLE, MAXANGLE );
         
         _rb.MoveRotation(clampedRotation);
     }
-
-    private void ShootBall()
-    {
-        _ballRb.AddForce(_shootOrigin.up * _shootSpeed, ForceMode2D.Impulse);
-        _ballLoaded = false;
-    }
     
-    //TODO
-    //Load the turret via a Loading Function, this function is called at the start and recalled every time the ball collides
+    //Show next upcoming bullet before Loading it
+    private void ShowNextBall()
+    {
+        if (showingNextBall) return;
+
+        LoadAmmoBank();
+        var ballIndex = Random.Range(0, _ammoBank.Count);
+        if (ballIndex > _ammoBank.Count)
+            ballIndex -= 1;
+        
+        _ballPrev = Instantiate(_ammoBank[ballIndex], _ballPrevOrigin.position, _shootOrigin.rotation);
+        showingNextBall = true;
+        
+        _ammoBank.Clear();
+        LoadBall();
+    }
+
+    //Load the turret, this function is called at the start and recalled every time the ball collides
     private void LoadBall()
     {
-        Debug.Log(_ballLoaded);
-
-        if (_ballLoaded) return;
+        if (ballLoaded) return;
         
         _loadedBall = _ballPrev;
         _loadedBall.transform.position = _shootOrigin.position;
         _ballRb = _loadedBall.GetComponent<Rigidbody2D>();
         
-        _ballLoaded = true;
-        _nextBallShown = false;
+        ballLoaded = true;
+        showingNextBall = false;
         ShowNextBall();
-        
-        
     }
-    //Show next upcoming bullet before Loading it
-    private void ShowNextBall()
-    {
-        if (_nextBallShown) return;
-        
-        Debug.Log("Showing Next Ball");
-        
-        _ballPrev = Instantiate(_ball, _ballPrevOrigin.position, _shootOrigin.rotation);
-        _nextBallShown = true;
-        
-        LoadBall();
-    }
-    //Make a randomizer as a Temporary bullet choosing system
 
+    //TODO
+    //Make a randomizer as a Temporary bullet choosing system
+    private void LoadAmmoBank()
+    {
+        BallPouch.Instance.CheckColors();
+        
+        if (hasRed)
+            _ammoBank.Add(_ballPrefab[0]);
+        if (hasYellow)
+            _ammoBank.Add(_ballPrefab[1]);
+        if (hasBlue)
+            _ammoBank.Add(_ballPrefab[2]);
+
+        hasRed = false;
+        hasBlue = false;
+        hasYellow = false;
+    }
     #endregion
     
 }

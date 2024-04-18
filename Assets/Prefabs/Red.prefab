@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 9048807026776014780}
   - component: {fileID: 5728033608139187997}
   m_Layer: 0
-  m_Name: Ball
+  m_Name: Red
   m_TagString: ColoredBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2f64075a235ac4b8309d61d0fdfcd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BallColor: 2
+  BallColor: 0
 --- !u!212 &6610996811072294677
 SpriteRenderer:
   m_ObjectHideFlags: 0
