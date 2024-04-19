@@ -211,7 +211,7 @@ Transform:
   - {fileID: 1533989409}
   - {fileID: 1069564804}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &277292565
 GameObject:
@@ -1024,7 +1024,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 739713364}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 8761c7e5cdf6dc344a1793ba59dde754, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1117,7 +1117,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 928472938}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 8761c7e5cdf6dc344a1793ba59dde754, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1165,7 +1165,7 @@ Transform:
   - {fileID: 382155212}
   - {fileID: 277292566}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1069564803
 GameObject:
@@ -1180,7 +1180,6 @@ GameObject:
   - component: {fileID: 1069564808}
   - component: {fileID: 1069564806}
   - component: {fileID: 1069564805}
-  - component: {fileID: 1069564809}
   m_Layer: 0
   m_Name: Yellow
   m_TagString: ColoredBall
@@ -1196,8 +1195,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1069564803}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.04, y: 4.58, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalPosition: {x: -3, y: 4.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 274149755}
@@ -1284,6 +1283,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParentPouch: {fileID: 274149753}
+  gridPos: {x: -2, y: -1.5}
+  gridSize: 1
+  isProjectile: 0
 --- !u!114 &1069564808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1297,58 +1299,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BallColor: 2
---- !u!50 &1069564809
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1069564803}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!1 &1264875689
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1264875690}
-  m_Layer: 0
-  m_Name: BallBag
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1264875690
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1264875689}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.90419, y: -0.07863234, z: -0.08297847}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1280012452
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,7 +1340,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1280012452}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: e99f99d2345e56145861c828c69ba1c1, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1500,11 +1450,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1533989409}
-  - component: {fileID: 1533989411}
-  - component: {fileID: 1533989410}
   - component: {fileID: 1533989413}
   - component: {fileID: 1533989412}
-  - component: {fileID: 1533989414}
+  - component: {fileID: 1533989411}
+  - component: {fileID: 1533989410}
   m_Layer: 0
   m_Name: Blue
   m_TagString: ColoredBall
@@ -1520,8 +1469,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1533989408}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.053, y: 4.595, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalPosition: {x: -2, y: 4.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 274149755}
@@ -1608,6 +1557,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParentPouch: {fileID: 274149753}
+  gridPos: {x: -2, y: -1.5}
+  gridSize: 1
+  isProjectile: 0
 --- !u!114 &1533989413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1621,27 +1573,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BallColor: 1
---- !u!50 &1533989414
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1533989408}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &1570134613
 GameObject:
   m_ObjectHideFlags: 0
@@ -1720,11 +1651,11 @@ Transform:
   m_GameObject: {fileID: 1570134613}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.784226, y: 10.0484, z: 1}
+  m_LocalScale: {x: 7, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1778796475
 GameObject:
@@ -1798,7 +1729,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1897122054}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 8761c7e5cdf6dc344a1793ba59dde754, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1824,11 +1755,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2129101326}
-  - component: {fileID: 2129101327}
-  - component: {fileID: 2129101328}
   - component: {fileID: 2129101330}
   - component: {fileID: 2129101329}
-  - component: {fileID: 2129101331}
+  - component: {fileID: 2129101327}
+  - component: {fileID: 2129101328}
   m_Layer: 0
   m_Name: Red
   m_TagString: ColoredBall
@@ -1844,8 +1774,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2129101325}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.93, y: 4.58, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalPosition: {x: -1, y: 4.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 274149755}
@@ -1932,6 +1862,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParentPouch: {fileID: 274149753}
+  gridPos: {x: -2, y: -1.5}
+  gridSize: 1
+  isProjectile: 0
 --- !u!114 &2129101330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1945,24 +1878,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BallColor: 0
---- !u!50 &2129101331
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2129101325}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
