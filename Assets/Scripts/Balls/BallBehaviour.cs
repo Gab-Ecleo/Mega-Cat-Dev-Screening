@@ -1,14 +1,18 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BallBehaviour : MonoBehaviour
 {
     public GameObject ParentPouch;
 
-    [SerializeField] private Vector2 gridPos;
-    [SerializeField] private float gridSize;
+    [SerializeField] private Vector2 _gridPos;
+    [SerializeField] private float _gridSize;
 
-    private Rigidbody2D rb;
+    [SerializeField] private float _hitBoxRange;
+    [SerializeField] private LayerMask _layerMask;
+
+    private Rigidbody2D _rb;
     private BallPouch _ballPouch;
     private BallProperties _ballProp;
 
@@ -16,7 +20,7 @@ public class BallBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         _ballProp = GetComponent<BallProperties>();
         _ballPouch = BallPouch.Instance;
         
@@ -24,10 +28,19 @@ public class BallBehaviour : MonoBehaviour
         isProjectile = true;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse1) && !isProjectile)
+            MoveBallsDown();
+    }
+
     private void FixedUpdate()
     {
         if (!isProjectile)
+        {
             SnapToGrid();
+            //CheckAttachedBall();
+        }
     }
 
     private void OnDestroy()
@@ -38,13 +51,23 @@ public class BallBehaviour : MonoBehaviour
 
     private void SnapToGrid()
     {
-        var currentPos = transform.position - (Vector3)gridPos;
-        var nearestRow = Mathf.RoundToInt(currentPos.x / gridSize);
-        var nearestColumn = Mathf.RoundToInt(currentPos.y / gridSize);
+        var currentPos = transform.position - (Vector3)_gridPos;
+        var nearestRow = Mathf.RoundToInt(currentPos.x / _gridSize);
+        var nearestColumn = Mathf.RoundToInt(currentPos.y / _gridSize);
 
-        var newPos = new Vector2(nearestRow * gridSize + gridPos.x, nearestColumn * gridSize + gridPos.y);
+        var newPos = new Vector2(nearestRow * _gridSize + _gridPos.x, nearestColumn * _gridSize + _gridPos.y);
 
         transform.position = newPos;
+    }
+
+    private void CheckAttachedBall()
+    {
+        RaycastHit2D hitScan = Physics2D.Raycast(transform.position, Vector2.up, _hitBoxRange, _layerMask);
+        
+        Debug.Log(hitScan.collider.gameObject);
+
+        if(hitScan.collider != null) return;
+            Destroy(gameObject);
     }
 
     private void CheckNeigboringBalls()
@@ -65,6 +88,11 @@ public class BallBehaviour : MonoBehaviour
         }
     }
 
+    private void MoveBallsDown()
+    {
+        transform.position = new Vector2(transform.position.x, transform.position.y - 1);
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         Debug.Log("is colliding");
@@ -73,7 +101,7 @@ public class BallBehaviour : MonoBehaviour
         if (!_ballPouch.ContainsBall(gameObject))
             _ballPouch.AddBall(gameObject);
         
-        rb.velocity = Vector3.zero;
+        _rb.velocity = Vector3.zero;
 
         //rb.velocity = Vector3.zero;
         gameObject.transform.parent = ParentPouch.transform;
