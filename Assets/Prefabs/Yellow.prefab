@@ -49,6 +49,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParentPouch: {fileID: 0}
+  gridPos: {x: -3, y: -2}
+  gridSize: 1
+  gYOffset: 0.5
+  gXOffset: 0
 --- !u!114 &6610996811072294678
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,10 +4,14 @@ using UnityEngine;
 public class BallBehaviour : MonoBehaviour
 {
     public GameObject ParentPouch;
+
+    [SerializeField] private Vector2 gridPos;
+    [SerializeField] private int gridSize;
+    [SerializeField] private float gYOffset;
+    [SerializeField] private float gXOffset;
     
     private Rigidbody2D rb;
     private BallPouch _ballPouch;
-    private bool _canSnap;
 
     private void Awake()
     {
@@ -15,7 +19,17 @@ public class BallBehaviour : MonoBehaviour
         _ballPouch = BallPouch.Instance;
         
         ParentPouch = GameObject.Find("BallPouch");
-        _canSnap = false;
+    }
+
+    private void SnapToGrid()
+    {
+        var currentPos = transform.position - (Vector3)gridPos;
+        var nearestRow = Mathf.RoundToInt(currentPos.x / gridSize);
+        var nearestColumn = Mathf.RoundToInt(currentPos.y / gridSize);
+
+        var newPos = new Vector2((nearestRow * gridSize + gridPos.x) - gXOffset, (nearestColumn * gridSize + gridPos.y) - gYOffset);
+
+        transform.position = newPos;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -24,14 +38,9 @@ public class BallBehaviour : MonoBehaviour
 
         if (!_ballPouch.ContainsBall(gameObject))
             _ballPouch.AddBall(gameObject);
-        //
-        // if (rb != null)
-        //     Destroy(rb);
-
-        rb.velocity = new Vector2(0, 0);
-        _canSnap = true;
-
-        gameObject.transform.parent = ParentPouch.transform;
+        
+        if (rb != null)
+            Destroy(rb);
 
         if (other.gameObject.CompareTag("ColoredBall"))
         {
@@ -46,18 +55,7 @@ public class BallBehaviour : MonoBehaviour
             }
         }
         
+        SnapToGrid();
         GameEvents.ON_BALL_COLLISSION?.Invoke();
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        Debug.Log(_canSnap);
-        
-        if (other.gameObject.tag == "BallTile" && _canSnap)
-        {
-            Debug.Log("Snapping object");
-            transform.position = other.gameObject.transform.position;
-        }
-            
     }
 }
