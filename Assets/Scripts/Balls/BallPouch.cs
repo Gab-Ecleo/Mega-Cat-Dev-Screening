@@ -56,7 +56,7 @@ public class BallPouch : MonoBehaviour
     private void LoadBallPouch()
     {
         _pouch.Clear();
-        foreach (BallProperties ballObj in gameObject.GetComponentsInChildren<BallProperties>())
+        foreach (CircleCollider2D ballObj in gameObject.GetComponentsInChildren<CircleCollider2D>())
         {
             _pouch.Add(ballObj.gameObject);
         }

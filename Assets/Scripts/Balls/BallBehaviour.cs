@@ -14,24 +14,15 @@ public class BallBehaviour : MonoBehaviour
 
     private Rigidbody2D _rb;
     private BallPouch _ballPouch;
-    private BallProperties _ballProp;
 
     [SerializeField] private bool isProjectile;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _ballProp = GetComponent<BallProperties>();
         _ballPouch = BallPouch.Instance;
         
         ParentPouch = GameObject.Find("BallPouch");
-        isProjectile = true;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && !isProjectile)
-            MoveBallsDown();
     }
 
     private void FixedUpdate()
@@ -39,12 +30,13 @@ public class BallBehaviour : MonoBehaviour
         if (!isProjectile)
         {
             SnapToGrid();
-            //CheckAttachedBall();
+            CheckAttachedBall();
         }
     }
 
     private void OnDestroy()
     {
+        Debug.Log("Object Destroyed");
         _ballPouch.RemoveBall(gameObject);
         CheckNeigboringBalls();
     }
@@ -63,8 +55,6 @@ public class BallBehaviour : MonoBehaviour
     private void CheckAttachedBall()
     {
         RaycastHit2D hitScan = Physics2D.Raycast(transform.position, Vector2.up, _hitBoxRange, _layerMask);
-        
-        Debug.Log(hitScan.collider.gameObject);
 
         if(hitScan.collider != null) return;
             Destroy(gameObject);
@@ -77,12 +67,9 @@ public class BallBehaviour : MonoBehaviour
         foreach (var ball in nBall)
         {
             if (ball.gameObject.tag == "Bounceable" || ball.gameObject.tag == "Obstacle") return;
-
-            //var ballCol = ball.gameObject.GetComponent<BallProperties>().BallColor;
-
+            
             if (ball.gameObject.tag == gameObject.tag)
             {
-                Debug.Log("Same Color");
                 Destroy(ball.gameObject);
             }
         }
@@ -95,19 +82,18 @@ public class BallBehaviour : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("is colliding");
-        if (other.gameObject.tag == "Bounceable") return;
-
         if (!_ballPouch.ContainsBall(gameObject))
             _ballPouch.AddBall(gameObject);
         
+        if (other.gameObject.tag == "Bounceable" || !isProjectile) return;
+        
         _rb.velocity = Vector3.zero;
-
-        //rb.velocity = Vector3.zero;
+        
         gameObject.transform.parent = ParentPouch.transform;
 
         if (other.gameObject.CompareTag(gameObject.tag))
         {
+            Debug.Log("Destroying Object");
             Destroy(other.gameObject);
             Destroy(gameObject);
         }
