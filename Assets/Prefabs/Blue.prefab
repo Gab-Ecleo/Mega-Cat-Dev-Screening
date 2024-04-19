@@ -49,13 +49,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParentPouch: {fileID: 0}
-  _gridPos: {x: -2, y: -1.5}
+  _gridPos: {x: -3.5, y: -1.5}
   _gridSize: 1
   _hitBoxRange: 1
   _layerMask:
     serializedVersion: 2
     m_Bits: 1
-  isProjectile: 0
+  isProjectile: 1
 --- !u!114 &6610996811072294678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,8 +109,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_SortingOrder: 4
+  m_Sprite: {fileID: 2071611144, guid: 0024297d5e17c3d43afb13a9cc00a2b5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

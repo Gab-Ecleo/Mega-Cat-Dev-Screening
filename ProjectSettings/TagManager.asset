@@ -7,6 +7,10 @@ TagManager:
   - Bounceable
   - ColoredBall
   - BallTile
+  - Blue
+  - Red
+  - Yellow
+  - Obstacle
   layers:
   - Default
   - TransparentFX
