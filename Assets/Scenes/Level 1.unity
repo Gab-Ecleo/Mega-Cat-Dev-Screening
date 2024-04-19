@@ -5522,7 +5522,7 @@ MonoBehaviour:
   timerTextBox: {fileID: 1177058212}
   _winScreen: {fileID: 1495835880}
   _loseScreen: {fileID: 1162458720}
-  _pauseScreen: {fileID: 0}
+  _pauseScreen: {fileID: 229684889}
 --- !u!4 &1362389379
 Transform:
   m_ObjectHideFlags: 0
