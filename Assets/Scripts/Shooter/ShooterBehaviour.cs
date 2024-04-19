@@ -119,8 +119,8 @@ public class ShooterBehaviour : MonoBehaviour
 
         if (_ballPrev != null)
         {
+            _ballPrev.transform.position = _shootOrigin.position;
             _loadedBall = _ballPrev;
-            _loadedBall.transform.position = _shootOrigin.position;
             _ballRb = _loadedBall.GetComponent<Rigidbody2D>();
         
             ballLoaded = true;
