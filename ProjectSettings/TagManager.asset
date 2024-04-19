@@ -11,6 +11,7 @@ TagManager:
   - Red
   - Yellow
   - Obstacle
+  - Danger Line
   layers:
   - Default
   - TransparentFX
