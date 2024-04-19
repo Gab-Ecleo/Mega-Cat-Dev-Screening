@@ -15,7 +15,7 @@ public class BallBehaviour : MonoBehaviour
     private Rigidbody2D _rb;
     private BallPouch _ballPouch;
 
-    [SerializeField] private bool isProjectile;
+    public bool isProjectile;
 
     private void Awake()
     {
@@ -23,6 +23,8 @@ public class BallBehaviour : MonoBehaviour
         _ballPouch = BallPouch.Instance;
         
         ParentPouch = GameObject.Find("BallPouch");
+
+        GameEvents.ON_TIMER_END += MoveBallsDown;
     }
 
     private void FixedUpdate()
@@ -36,9 +38,10 @@ public class BallBehaviour : MonoBehaviour
 
     private void OnDestroy()
     {
-        Debug.Log("Object Destroyed");
         _ballPouch.RemoveBall(gameObject);
         CheckNeigboringBalls();
+        
+        GameEvents.ON_TIMER_END -= MoveBallsDown;
     }
 
     private void SnapToGrid()
@@ -77,6 +80,8 @@ public class BallBehaviour : MonoBehaviour
 
     private void MoveBallsDown()
     {
+        if (isProjectile) return;
+        
         transform.position = new Vector2(transform.position.x, transform.position.y - 1);
     }
 
@@ -100,5 +105,13 @@ public class BallBehaviour : MonoBehaviour
         
         isProjectile = false;
         GameEvents.ON_BALL_COLLISSION?.Invoke();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (isProjectile) return;
+        
+        if (other.gameObject.tag == "Danger Line")
+            GameEvents.ON_GAME_LOSE?.Invoke();
     }
 }

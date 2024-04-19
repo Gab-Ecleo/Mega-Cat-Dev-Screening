@@ -18,13 +18,16 @@ public class BallPouch : MonoBehaviour
             _instance = this;
         else if (_instance != this)
             Destroy(gameObject);
-    }
-
-    private void Start()
-    {
+        
         LoadBallPouch();
     }
-    
+
+    private void Update()
+    {
+        if (_pouch.Count == 0) 
+            GameEvents.ON_GAME_CLEAR?.Invoke();
+    }
+
     public void CheckColors()
     {
         if (_pouch == null) return;
@@ -52,7 +55,7 @@ public class BallPouch : MonoBehaviour
             }
         }
     }
-
+    
     private void LoadBallPouch()
     {
         _pouch.Clear();
