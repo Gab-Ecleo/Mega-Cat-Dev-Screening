@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
+
 
 public class LevelManager : MonoBehaviour
 {
@@ -14,8 +12,13 @@ public class LevelManager : MonoBehaviour
 
     public float timer;
 
-    [SerializeField] private TextMeshProUGUI timerTextBox; 
+    [SerializeField] private TextMeshProUGUI timerTextBox;
+    [SerializeField] private GameObject _winScreen;
+    [SerializeField] private GameObject _loseScreen;
+    [SerializeField] private GameObject _pauseScreen;
+    
     private float _remainingTime;
+    private bool _isGameOver;
     
     #endregion
 
@@ -36,12 +39,20 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        _isGameOver = false;
         ResetTimer();
     }
 
     private void Update()
     {
         RunTimer();
+
+        if (_isGameOver && Input.anyKeyDown)
+            ReturnToTitle();
+        
+        if (!_isGameOver && Input.GetKeyDown(KeyCode.Escape))
+            PauseGame();
+
     }
 
     private void OnDestroy()
@@ -57,14 +68,33 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log("Level Cleared!");
         Time.timeScale = 0;
-        //Add Win Screen
+        _winScreen.SetActive(true);
+        _isGameOver = true;
     }
 
     private void LevelLost()
     {
         Debug.Log("Game Over");
         Time.timeScale = 0;
-        //Add Lose Screen
+        _loseScreen.SetActive(true);
+        _isGameOver = true;
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        _pauseScreen.SetActive(true);
+    }
+    
+    public void ResumeGame()
+    {
+        _pauseScreen.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public void ReturnToTitle()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
     
     private void RunTimer()
